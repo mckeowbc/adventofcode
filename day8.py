@@ -3,35 +3,37 @@
 import sys
 import re
 
-grid = [
-    ['.' for i in range(50)]
-        for j in range(6)
-]
-
-
-def rect(a,b,g):
-    for r in range(b):
-        for c in range(a):
-            grid[r][c] = '#'
-
-def grid_str(g):
-    return "\n".join((" ".join(r) for r in g))
-
 def rotate(n,r):
     for _ in range(n):
         r.insert(0,r.pop(-1))
 
-def rotate_col(c,n,g):
-    col = [r[c] for r in g]
-    rotate(n,col)
+class Grid(object):
+    def __init__(self):
+        self.__grid = [
+            [' ' for i in range(50)]
+                for j in range(6)
+        ]
 
-    for i,x in enumerate(col):
-        g[i][c] = x
+    def rect(self,a,b):
+        for r in range(b):
+            for c in range(a):
+                self.__grid[r][c] = '#'
 
-def rotate_row(r,n,g):
-    rotate(n,g[r])
+    def __str__(self):
+        return "\n".join((" ".join(r) for r in self.__grid))
+
+    def rotate_col(self,c,n):
+        col = [r[c] for r in self.__grid]
+        rotate(n,col)
+
+        for i,x in enumerate(col):
+            self.__grid[i][c] = x
+
+    def rotate_row(self,r,n):
+        rotate(n,self.__grid[r])
 
 with open(sys.argv[1],'r') as fin:
+    grid = Grid()
     for inst in fin:
         inst = inst.strip()
 
@@ -43,14 +45,14 @@ with open(sys.argv[1],'r') as fin:
 
             (a,b) = map(int,m.groups())
 
-            rect(a,b,grid)
+            grid.rect(a,b)
         elif inst.startswith('rotate row'):
             m = re.search(r'rotate\s+row\s+y=(\d+)\s+by\s+(\d+)',inst)
 
             if not m:
                 raise ValueError, inst
             (r,n) = map(int,m.groups())
-            rotate_row(r,n,grid)
+            grid.rotate_row(r,n)
         elif inst.startswith('rotate column'):
             m = re.search(r'rotate\s+column\s+x=(\d+)\s+by\s+(\d+)',inst)
 
@@ -58,7 +60,7 @@ with open(sys.argv[1],'r') as fin:
                 raise ValueError, inst
 
             (c,n) = map(int,m.groups())
-            rotate_col(c,n,grid)
+            grid.rotate_col(c,n)
 
-print grid_str(grid)
-print grid_str(grid).count('#')
+print grid
+print str(grid).count('#')

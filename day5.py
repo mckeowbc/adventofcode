@@ -5,12 +5,13 @@ import sys
 
 doorid = sys.argv[1]
 c = 0
+count = 0
 passwd = ''
 
-while len(passwd) < 8:
+while count < 8:
     h = hashlib.md5(doorid + str(c)).hexdigest()
-
-    if h[0:5] == '00000':
+    if h.startswith('00000'):
         passwd += h[5]
+        count = len(passwd)
     c += 1
 print passwd
