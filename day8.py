@@ -20,7 +20,7 @@ class Grid(object):
                 self.__grid[r][c] = '#'
 
     def __str__(self):
-        return "\n".join((" ".join(r) for r in self.__grid))
+        return "\n".join(("".join(r) for r in self.__grid))
 
     def rotate_col(self,c,n):
         col = [r[c] for r in self.__grid]
