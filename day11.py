@@ -7,12 +7,11 @@ grid = [
     []
 ]
 
-def safe(items):
-    micros = [m for m in items if m[1] == 'M']
-    gens   = [g for g in items if g[1] == 'G'
-    
-    for m in micros:
-        if (m[0] + 'G') not in gens:
-            return False
-    return True
 
+grid = [4,5,1,0]
+
+total = sum(grid)
+
+count = 0
+
+while grid[-1] < total:
